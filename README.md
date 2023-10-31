@@ -1,0 +1,1 @@
+# chrome-horse-wallpaper-extension
