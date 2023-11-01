@@ -1,7 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
   // 画像のリスト
   // TODO: ネット画像か、スクレイピングされた画像一覧にする
-  var imageList = ["images/image1.jpg", "images/image2.jpg"];
+  var imageList = [
+    "images/image1.jpg",
+    "images/image2.jpg",
+    "https://cdn.netkeiba.com/img.db/v1.1/show_photo.php?horse_id=2018102167&no=67944&tn=&tmp=no",
+    "https://cdn.netkeiba.com/img.db/v1.1/show_photo.php?horse_id=2018102167&no=81255&tn=&tmp=no",
+  ];
 
   // ランダムな画像の選択
   var randomIndex = Math.floor(Math.random() * imageList.length);
