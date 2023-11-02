@@ -1,19 +1,26 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // 画像のリスト
-  // TODO: ネット画像か、スクレイピングされた画像一覧にする
-  var imageList = [
-    "images/image1.jpg",
-    "images/image2.jpg",
-    "https://cdn.netkeiba.com/img.db/v1.1/show_photo.php?horse_id=2018102167&no=67944&tn=&tmp=no",
-    "https://cdn.netkeiba.com/img.db/v1.1/show_photo.php?horse_id=2018102167&no=81255&tn=&tmp=no",
-  ];
+  var imageList = []; // 画像のリストを初期化
 
-  // ランダムな画像の選択
-  var randomIndex = Math.floor(Math.random() * imageList.length);
-  var randomImage = imageList[randomIndex];
+  // test.txt ファイルのパス
+  const fileUrl = "image_list.txt";
 
-  // CSSで背景画像を設定
-  document.body.style.backgroundImage = "url('" + randomImage + "')";
+  // ファイルをフェッチして画像リストを取得
+  fetch(fileUrl)
+    .then((response) => response.text())
+    .then((text) => {
+      // テキストを改行で分割し、空白行をフィルタリングして画像リストに追加
+      imageList = text.split("\n").filter((line) => line.trim() !== "");
+
+      // ランダムな画像の選択
+      var randomIndex = Math.floor(Math.random() * imageList.length);
+      var randomImage = imageList[randomIndex];
+
+      // CSSで背景画像を設定
+      document.body.style.backgroundImage = "url('" + randomImage + "')";
+    })
+    .catch((error) => {
+      console.error("Error while loading files: ", error);
+    });
 
   // 日付と時刻を表示
   var dateContainer = document.getElementById("date");
