@@ -4,7 +4,11 @@
   "version": "1.0",
   "description": "Display a random horse image on new tab.",
   "permissions": ["tabs"],
+  "host_permissions": ["https://script.google.com/*"],
   "chrome_url_overrides": {
     "newtab": "index.html"
+  },
+  "background": {
+    "service_worker": "background.js"
   }
 }
