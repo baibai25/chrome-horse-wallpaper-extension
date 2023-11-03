@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Random Horse Image New Tab",
+  "name": "Horse Wallpaper Extension",
   "version": "1.0",
   "description": "Display a random horse image on new tab.",
   "permissions": ["tabs", "storage"],
