@@ -10,7 +10,10 @@ function initializeImageStorage() {
 
   fetch(gasUrl)
     .then((response) => response.json())
-    .then((data) => storeImageList(data.map((item) => item.URL)))
+    .then((data) => {
+      const urlList = data.map((item) => item.URL);
+      storeImageList(urlList);
+    })
     .catch((error) =>
       console.error("データの取得中にエラーが発生しました: ", error)
     );

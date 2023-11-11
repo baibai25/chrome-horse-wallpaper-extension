@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function initializeBackgroundImage() {
   chrome.runtime.sendMessage({ message: "get_data" }, (response) => {
     if (response && response.imageList && response.imageList.length > 0) {
+      preloadImages(response.imageList);
       const randomImage = selectRandomImage(response.imageList);
       setBackgroundImage(randomImage);
     } else {
@@ -19,6 +20,13 @@ function setBackgroundImage(imageUrl) {
   img.onload = () =>
     (document.body.style.backgroundImage = `url('${imageUrl}')`);
   img.src = imageUrl;
+}
+
+function preloadImages(imageList) {
+  imageList.forEach((url) => {
+    const img = new Image();
+    img.src = url;
+  });
 }
 
 function selectRandomImage(imageList) {
