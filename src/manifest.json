@@ -10,5 +10,10 @@
   },
   "background": {
     "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "icons/tab.png",
+    "48": "icons/tab.png",
+    "128": "icons/tab.png"
   }
 }
