@@ -17,32 +17,20 @@ function initializeImageStorage() {
 }
 
 function storeImageList(urlList) {
-  const imagePromises = urlList.map((url) => fetchImageAsBase64(url));
-  Promise.all(imagePromises).then((base64Images) => {
-    chrome.storage.local.set({ imageList: base64Images }, () => {
-      console.log("画像データを保存しました");
-    });
+  chrome.storage.local.set({ imageList: urlList }, () => {
+    console.log("画像URLを保存しました");
   });
-}
-
-function fetchImageAsBase64(url) {
-  return fetch(url)
-    .then((response) => response.blob())
-    .then(
-      (blob) =>
-        new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.onloadend = () => resolve(reader.result);
-          reader.readAsDataURL(blob);
-        })
-    );
 }
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.message === "get_data") {
     chrome.storage.local.get(["imageList"], function (result) {
-      sendResponse(result.imageList || []);
+      if (result && result.imageList) {
+        sendResponse({ imageList: result.imageList });
+      } else {
+        sendResponse({ imageList: [] }); // 空のリストを返す
+      }
     });
-    return true;
+    return true; // 非同期レスポンスを許可
   }
 });

@@ -4,10 +4,21 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function initializeBackgroundImage() {
-  chrome.runtime.sendMessage({ message: "get_data" }, (imageList) => {
-    const randomImage = selectRandomImage(imageList);
-    document.body.style.backgroundImage = `url('${randomImage}')`;
+  chrome.runtime.sendMessage({ message: "get_data" }, (response) => {
+    if (response && response.imageList && response.imageList.length > 0) {
+      const randomImage = selectRandomImage(response.imageList);
+      setBackgroundImage(randomImage);
+    } else {
+      console.error("画像リストが取得できませんでした。");
+    }
   });
+}
+
+function setBackgroundImage(imageUrl) {
+  const img = new Image();
+  img.onload = () =>
+    (document.body.style.backgroundImage = `url('${imageUrl}')`);
+  img.src = imageUrl;
 }
 
 function selectRandomImage(imageList) {
@@ -18,6 +29,7 @@ function selectRandomImage(imageList) {
 function initializeDateTimeDisplay() {
   const dateContainer = document.getElementById("date");
   const timeContainer = document.getElementById("time");
+  const updateInterval = 1000; // 1秒ごとに更新
 
   function updateDateTime() {
     const currentDate = new Date();
@@ -26,7 +38,7 @@ function initializeDateTimeDisplay() {
   }
 
   updateDateTime();
-  setInterval(updateDateTime, 1000);
+  setInterval(updateDateTime, updateInterval);
 }
 
 function formatDate(date) {
