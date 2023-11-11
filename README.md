@@ -8,5 +8,5 @@ This extension has been developed for personal use.
 ## Overview
 
 - Image URLs are maintained in a Google spreadsheet.
-- The list of URLs is saved locally via GAS (Google Apps Script) when the extension is installed.
-- Response speed depends on network speed, server status, and image size.
+- Retrieve image URLs via Google Apps Script (GAS) when installing extensions, and save the images locally.
+- The tab icon was created by DALL-E.
