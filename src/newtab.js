@@ -3,9 +3,24 @@ import { loadUrlList } from "./storage.js";
 const IMAGE_LOAD_TIMEOUT_MS = 8000;
 
 document.addEventListener("DOMContentLoaded", () => {
+  ensureFavicon();
   initializeBackgroundImage();
   initializeDateTimeDisplay();
 });
+
+// Chromium 系ブラウザの new tab override ページでは、
+// 静的な <link rel="icon"> がタブストリップのアイコンとして
+// 拾われないことがあるため、DOMContentLoaded 後に JS で
+// 絶対 URL の <link> を挿入する。
+function ensureFavicon() {
+  const existing = document.querySelectorAll('link[rel~="icon"]');
+  existing.forEach((el) => el.remove());
+  const link = document.createElement("link");
+  link.rel = "icon";
+  link.type = "image/png";
+  link.href = chrome.runtime.getURL("icons/tab.png");
+  document.head.appendChild(link);
+}
 
 async function initializeBackgroundImage() {
   try {
