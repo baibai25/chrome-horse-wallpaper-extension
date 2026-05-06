@@ -1,4 +1,5 @@
 import { loadUrlList } from "./storage.js";
+import { getCachedImage } from "./imageCache.js";
 
 const IMAGE_LOAD_TIMEOUT_MS = 8000;
 
@@ -23,10 +24,13 @@ async function initializeBackgroundImage() {
 }
 
 async function setRandomBackgroundImage(imageList) {
-  // ランダム順に試し、最初に読み込めた URL を背景に採用する。
-  // Wikipedia などの削除済み画像で失敗しても新タブが空のままにならない。
   const shuffled = shuffle([...imageList]);
   for (const url of shuffled) {
+    const blob = await getCachedImage(url).catch(() => null);
+    if (blob) {
+      document.body.style.backgroundImage = `url('${URL.createObjectURL(blob)}')`;
+      return;
+    }
     const ok = await tryLoadImage(url);
     if (ok) {
       document.body.style.backgroundImage = `url('${url}')`;

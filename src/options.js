@@ -1,4 +1,5 @@
 import { loadUrlList, saveUrlList } from "./storage.js";
+import { cacheImage, syncCache } from "./imageCache.js";
 
 const IMAGE_CHECK_TIMEOUT_MS = 10000;
 const CHECK_CONCURRENCY = 6;
@@ -50,6 +51,7 @@ async function handleSave() {
 
   try {
     await saveUrlList(urls);
+    await syncCache(urls);
     updateCount(urls.length);
     showStatus(`${urls.length} 件の URL を保存しました`, "success");
   } catch (error) {
@@ -72,13 +74,18 @@ async function handleCheck() {
 
   const failed = [];
   let done = 0;
+  let cached = 0;
   const queue = [...urls];
   const worker = async () => {
     while (queue.length > 0) {
       const url = queue.shift();
       const ok = await tryLoadImage(url);
       done++;
-      if (!ok) failed.push(url);
+      if (ok) {
+        if (await tryCacheImage(url)) cached++;
+      } else {
+        failed.push(url);
+      }
       renderCheckProgress(done, urls.length);
     }
   };
@@ -90,9 +97,9 @@ async function handleCheck() {
   lastFailedUrls = failed;
 
   if (failed.length === 0) {
-    renderCheckSuccess(urls.length);
+    renderCheckSuccess(urls.length, cached);
   } else {
-    renderCheckFailure(failed, urls.length);
+    renderCheckFailure(failed, urls.length, cached);
     removeFailedButton.hidden = false;
   }
 }
@@ -121,19 +128,19 @@ function renderCheckProgress(done, total) {
   checkResultEl.textContent = `チェック中... ${done} / ${total}`;
 }
 
-function renderCheckSuccess(total) {
+function renderCheckSuccess(total, cached) {
   checkResultEl.textContent = "";
   const span = document.createElement("span");
   span.className = "success";
-  span.textContent = `すべての URL が読み込めました (${total} 件)`;
+  span.textContent = `すべての URL が読み込めました (${total} 件, キャッシュ済み ${cached} 件)`;
   checkResultEl.appendChild(span);
 }
 
-function renderCheckFailure(failed, total) {
+function renderCheckFailure(failed, total, cached) {
   checkResultEl.textContent = "";
   const span = document.createElement("span");
   span.className = "error";
-  span.textContent = `${failed.length} / ${total} 件が読み込めませんでした:`;
+  span.textContent = `${failed.length} / ${total} 件が読み込めませんでした (キャッシュ済み ${cached} 件):`;
   checkResultEl.appendChild(span);
   const ul = document.createElement("ul");
   for (const url of failed) {
@@ -142,6 +149,18 @@ function renderCheckFailure(failed, total) {
     ul.appendChild(li);
   }
   checkResultEl.appendChild(ul);
+}
+
+async function tryCacheImage(url) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) return false;
+    const blob = await response.blob();
+    await cacheImage(url, blob);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 function tryLoadImage(url) {
