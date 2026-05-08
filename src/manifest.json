@@ -4,6 +4,7 @@
   "version": "2.0.0",
   "description": "Display a random horse image on new tab.",
   "permissions": ["storage"],
+  "host_permissions": ["https://*/*", "http://*/*"],
   "chrome_url_overrides": {
     "newtab": "newtab.html"
   },
