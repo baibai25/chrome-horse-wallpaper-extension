@@ -30,7 +30,7 @@ This extension has been developed for personal use.
 
 ### Edge Add-ons / Chrome Web Store (multi-device sync)
 
-Publish the extension to a store (unlisted is fine for personal use). Once installed via the store, `chrome.storage.sync` will sync the URL list across all devices signed in with the same browser account. Image cache (IndexedDB) is per-device; run the link checker on each device once.
+Publish the extension to a store (unlisted is fine for personal use). Once installed via a store, the extension is automatically installed on other devices signed in with the same browser account, and `chrome.storage.sync` will sync the URL list across them. Image cache (IndexedDB) is per-device; run the link checker on each device once.
 
 ## File structure
 
