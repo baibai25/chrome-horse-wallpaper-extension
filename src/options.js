@@ -22,7 +22,7 @@ async function init() {
     urlListEl.value = urls.join("\n");
     updateCount(urls.length);
   } catch (error) {
-    showStatus(`読み込みに失敗しました: ${error.message}`, "error");
+    showStatus(`Failed to load: ${error.message}`, "error");
   }
   saveButton.addEventListener("click", handleSave);
   checkButton.addEventListener("click", handleCheck);
@@ -43,7 +43,7 @@ async function handleSave() {
   const invalid = urls.filter((url) => !/^https?:\/\//i.test(url));
   if (invalid.length > 0) {
     showStatus(
-      `http:// または https:// で始まらない URL が ${invalid.length} 件あります`,
+      `${invalid.length} URL(s) do not start with http:// or https://`,
       "error"
     );
     return;
@@ -53,16 +53,16 @@ async function handleSave() {
     await saveUrlList(urls);
     await syncCache(urls);
     updateCount(urls.length);
-    showStatus(`${urls.length} 件の URL を保存しました`, "success");
+    showStatus(`Saved ${urls.length} URL(s)`, "success");
   } catch (error) {
-    showStatus(`保存に失敗しました: ${error.message}`, "error");
+    showStatus(`Failed to save: ${error.message}`, "error");
   }
 }
 
 async function handleCheck() {
   const urls = getUrlsFromTextarea();
   if (urls.length === 0) {
-    showStatus("チェック対象の URL がありません", "error");
+    showStatus("No URLs to check", "error");
     return;
   }
 
@@ -113,7 +113,7 @@ function handleRemoveFailed() {
   const removedCount = lastFailedUrls.length;
   resetCheckResult();
   showStatus(
-    `${removedCount} 件を削除しました。保存ボタンで確定してください`,
+    `Removed ${removedCount} URL(s). Click Save to confirm.`,
     "success"
   );
 }
@@ -125,14 +125,14 @@ function resetCheckResult() {
 }
 
 function renderCheckProgress(done, total) {
-  checkResultEl.textContent = `チェック中... ${done} / ${total}`;
+  checkResultEl.textContent = `Checking... ${done} / ${total}`;
 }
 
 function renderCheckSuccess(total, cached) {
   checkResultEl.textContent = "";
   const span = document.createElement("span");
   span.className = "success";
-  span.textContent = `すべての URL が読み込めました (${total} 件, キャッシュ済み ${cached} 件)`;
+  span.textContent = `All URLs loaded successfully (${total} total, ${cached} cached)`;
   checkResultEl.appendChild(span);
 }
 
@@ -140,7 +140,7 @@ function renderCheckFailure(failed, total, cached) {
   checkResultEl.textContent = "";
   const span = document.createElement("span");
   span.className = "error";
-  span.textContent = `${failed.length} / ${total} 件が読み込めませんでした (キャッシュ済み ${cached} 件):`;
+  span.textContent = `${failed.length} / ${total} URL(s) failed to load (${cached} cached):`;
   checkResultEl.appendChild(span);
   const ul = document.createElement("ul");
   for (const url of failed) {
@@ -180,7 +180,7 @@ function tryLoadImage(url) {
 }
 
 function updateCount(n) {
-  countEl.textContent = `登録 ${n} 件`;
+  countEl.textContent = `${n} registered`;
 }
 
 function showStatus(message, kind) {
