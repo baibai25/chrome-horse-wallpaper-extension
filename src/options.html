@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Horse Wallpaper - Options</title>
+    <title>Tab Wallpaper - Options</title>
     <link rel="icon" type="image/png" sizes="any" href="icons/tab.png" />
     <style>
       body {
@@ -102,20 +102,20 @@
     <script type="module" src="options.js"></script>
   </head>
   <body>
-    <h1>Horse Wallpaper Options</h1>
+    <h1>Tab Wallpaper Options</h1>
     <p>
-      新しいタブに表示する画像の URL を 1 行につき 1 件入力してください。<br />
-      リンクチェックを実行すると、画像データがローカルにキャッシュされ、新しいタブで即座に表示されます。
+      Enter one image URL per line to display on the new tab page.<br />
+      Running Link Check caches image data locally so new tabs can display it instantly.
     </p>
     <textarea
       id="url-list"
-      placeholder="https://example.com/horse1.jpg&#10;https://example.com/horse2.jpg"
+      placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"
     ></textarea>
     <div class="toolbar">
-      <button id="save" type="button">保存</button>
-      <button id="check" type="button" class="secondary">リンクチェック</button>
+      <button id="save" type="button">Save</button>
+      <button id="check" type="button" class="secondary">Link Check</button>
       <button id="remove-failed" type="button" class="danger" hidden>
-        失敗した URL を削除
+        Remove failed URLs
       </button>
       <span id="count"></span>
       <span id="status"></span>

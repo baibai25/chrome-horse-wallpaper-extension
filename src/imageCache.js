@@ -1,4 +1,4 @@
-const DB_NAME = "horseWallpaperCache";
+const DB_NAME = "tabWallpaperCache";
 const DB_VERSION = 1;
 const STORE_NAME = "images";
 

@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Horse Wallpaper Extension",
+  "name": "Tab Wallpaper",
   "version": "2.0.0",
-  "description": "Display a random horse image on new tab.",
+  "description": "Display a random image on every new tab.",
   "permissions": ["storage"],
   "host_permissions": ["https://*/*", "http://*/*"],
   "chrome_url_overrides": {

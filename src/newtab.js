@@ -13,13 +13,13 @@ async function initializeBackgroundImage() {
     const imageList = await loadUrlList();
     if (imageList.length === 0) {
       console.warn(
-        "画像リストが未設定です。拡張機能のオプションページから URL を登録してください。"
+        "Image list is empty. Please add URLs from the extension's options page."
       );
       return;
     }
     await setRandomBackgroundImage(imageList);
   } catch (error) {
-    console.error("画像リストの読み込みに失敗しました:", error);
+    console.error("Failed to load image list:", error);
   }
 }
 
@@ -36,9 +36,9 @@ async function setRandomBackgroundImage(imageList) {
       document.body.style.backgroundImage = `url('${url}')`;
       return;
     }
-    console.warn(`画像の読み込みに失敗しました: ${url}`);
+    console.warn(`Failed to load image: ${url}`);
   }
-  console.error("すべての画像 URL が読み込めませんでした");
+  console.error("Failed to load any image URL");
 }
 
 function tryLoadImage(url) {

@@ -1,6 +1,6 @@
-# chrome-horse-wallpaper-extension
+# chromium-tab-wallpaper
 
-A Chrome/Edge extension that displays a random image every time you open a new tab.
+A Chromium-based browser (Chrome/Edge/etc.) extension that displays a random image every time you open a new tab.
 This extension has been developed for personal use.
 
 <img src="./docs/overview.png" alt="Preview" title="Preview">
@@ -20,8 +20,8 @@ This extension has been developed for personal use.
 3. Enable **Developer mode**
 4. Click **Load unpacked** and select the `src/` folder
 5. Open the extension's **Options** page
-6. Paste your image URLs (one per line) and click **保存** (Save)
-7. Click **リンクチェック** (Link Check) to validate and cache all images
+6. Paste your image URLs (one per line) and click **Save**
+7. Click **Link Check** to validate and cache all images
 8. Open a new tab to see a random image
 
 ## File structure
